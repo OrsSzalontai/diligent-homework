@@ -1,0 +1,112 @@
+.App {
+
+  padding: 36px;
+}
+
+
+.App-header {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.search-bar {
+  height: 40px;
+  width: 100%;
+  display: flex; 
+  padding-top: 36px;
+  gap: 50px;
+}
+
+.notification {
+  height: 40px;
+  width: 25%;
+  display: flex; 
+  align-items: center;
+  margin-top: 15px;
+  justify-content: center;
+  color: white;
+}
+
+.submit-button {
+  width: 60px;
+}
+
+.text-search {
+  min-width: 50%;
+}
+
+.cards-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 31px;
+  overflow-x: hidden;
+}
+
+.card {
+  width: 175px;
+  font-size: 12px;
+  flex: 0 0 auto;        
+  display: flex;         
+  flex-direction: column;
+  position: relative;
+}
+
+.card--image {
+  width: 100%;
+  border-radius: 9px;
+  margin-bottom: 9px;
+}
+
+.card--title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card--stats {
+  display: flex;
+  align-items: center;
+}
+
+.card--price {
+  margin-top: auto;
+}
+
+.card--star {
+  max-height: 14px;
+  max-width: 14px;
+}
+
+.paginator {
+  justify-content: center;
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.paginator button {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.paginator button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
