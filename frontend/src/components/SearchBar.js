@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-export default function SearchBar() {
+export default function SearchBar({onInputSumbit}) {
     const [inputValue, setInputValue] = useState('');
 
     const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Submitted value:', inputValue);
+        event.preventDefault()
+        onInputSumbit(inputValue)
     };
 
     const handleInputChange = (e) => {
@@ -21,7 +21,7 @@ export default function SearchBar() {
                 onChange={handleInputChange}
                 placeholder="Search for movies..."
             />
-            <button className='submit-button' type="submit">Submit</button>
+            <button className='submit-button' type="submit" onSubmit={handleSubmit}>Submit</button>
         </form>
     );
 };

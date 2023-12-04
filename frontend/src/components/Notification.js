@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-export default function Notification({ result }) {
+export default function Notification({ error, statusCode, statusText }) {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
@@ -13,22 +13,22 @@ export default function Notification({ result }) {
     }, []);
 
     let color = '';
-    console.log(result)
-    switch (result) {
-        case 'error':
+    const statusCodeFirstNumber = Number(statusCode.toString().charAt(0))
+
+    switch (statusCodeFirstNumber) {
+        case 5:
             color = 'red';
             break;
-        case 'no-error':
+        case 2:
             color = 'green';
             break;
-        case 'unknown':
+        case 3:
             color = 'orange';
             break;
         default:
-            color = 'black'; // Default color
+            color = 'Tomato';
             break;
     }
-
 
     return (
         <>
@@ -37,7 +37,7 @@ export default function Notification({ result }) {
                     backgroundColor: color,
                 }}
             >
-                {result}
+                {`Code: ${statusCode} Result: ${error || statusText}`}
             </div>}
         </>
     );

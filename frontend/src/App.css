@@ -1,8 +1,6 @@
 .App {
-
   padding: 36px;
 }
-
 
 .App-header {
   text-align: center;
@@ -14,6 +12,20 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App-landing {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.landing-image {
+  width: 350px;
+  height: 400px;
 }
 
 .search-bar {
@@ -109,4 +121,25 @@
   background-color: #007bff;
   color: #fff;
   border-color: #007bff;
+}
+
+.loading-spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px; 
+}
+
+.loading-spinner {
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid #0f3f5f; 
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

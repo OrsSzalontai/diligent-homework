@@ -1,31 +1,28 @@
 import './App.css';
+import Header from './components/Header'
 import SearchBar from './components/SearchBar';
-import Card from "./components/Card"
-import data from "./data"
-import Paginator from './components/Paginator';
-import Notification from './components/Notification';
+import Body from './components/Body';
+import React, { useEffect, useState } from 'react';
+import useDataFetching from './hooks/FetchDataHook';
+import Loading from './components/Loading';
 
 function App() {
-  const cards = data.map(item => {
-    return (
-      <Card
-        key={item.id}
-        {...item}
+  const [searchValue, setSearchValue] = useState('');
 
-      />
-    )
-  })
+  const onInputSumbit = (newValue) => {
+    setSearchValue(newValue)
+  }
 
-  const result = 'unknown';
+  const apiHookResults = useDataFetching(searchValue);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Diligent homework - The Movie Database search app</h1>
-      </header>
-      <SearchBar />
-      {result && <Notification result={result}/>}
-      <Paginator data={cards} />
+      <Header />
+      <SearchBar onInputSumbit={onInputSumbit} />
+      {apiHookResults.isLoading
+        ? <Loading />
+        : <Body apiHookResults={apiHookResults}/>
+      }
     </div>
   );
 }

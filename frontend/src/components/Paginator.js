@@ -43,7 +43,6 @@ export default function Paginator({ data }) {
             </section>
 
         )
-        return
     };
 
     const paginationItems = [];
