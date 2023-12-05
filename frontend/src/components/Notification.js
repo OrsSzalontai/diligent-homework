@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 
-export default function Notification({ error, statusCode, statusText }) {
+export default function Notification({ notificationProps }) {
     const [isVisible, setIsVisible] = useState(true);
+
+    const { error, statusCode, statusText, isResultFromDB } = notificationProps;
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsVisible(false);
-        }, 2500);
+        }, 10000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -37,7 +39,7 @@ export default function Notification({ error, statusCode, statusText }) {
                     backgroundColor: color,
                 }}
             >
-                {`Code: ${statusCode} Result: ${error || statusText}`}
+                {`Code: ${statusCode} Result: ${error || statusText} Data from: ${isResultFromDB ? 'Database' : '3rd party API'}`}
             </div>}
         </>
     );

@@ -2,23 +2,23 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useDataFetching = (searchValue) => {
-
-
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [statusCode, setStatusCode] = useState(0);
     const [statusText, setStatusText] = useState('')
+    const [isResultFromDB, setIsResultFromDB] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             if (!!searchValue) {
                 try {
                     const response = await axios.get(`http://localhost:5000/api/data?search=${searchValue}`);
-                    setData(response.data);
+                    setData(response.data.data);
                     setIsLoading(false);
                     setStatusCode(response.status)
                     setStatusText(response.statusText)
+                    setIsResultFromDB(response.data.isResultFromDB)
                 } catch (error) {
                     setError(error);
                     setIsLoading(false);
@@ -33,7 +33,7 @@ const useDataFetching = (searchValue) => {
 
     }, [searchValue]);
 
-    return { data, error, statusCode, statusText, isLoading };
+    return { data, error, statusCode, statusText, isResultFromDB, isLoading };
 };
 
 export default useDataFetching;

@@ -2,9 +2,10 @@ import './App.css';
 import Header from './components/Header'
 import SearchBar from './components/SearchBar';
 import Body from './components/Body';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useDataFetching from './hooks/FetchDataHook';
 import Loading from './components/Loading';
+import CacheHitCounter from './components/CacheHitCounter';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -18,10 +19,13 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <SearchBar onInputSumbit={onInputSumbit} />
+      <div className='search-bar-counter'>
+        <SearchBar onInputSumbit={onInputSumbit} />
+        <CacheHitCounter apiHookResults={apiHookResults} />
+      </div>
       {apiHookResults.isLoading
         ? <Loading />
-        : <Body apiHookResults={apiHookResults}/>
+        : <Body apiHookResults={apiHookResults} />
       }
     </div>
   );
