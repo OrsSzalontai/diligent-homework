@@ -7,21 +7,20 @@ import useDataFetching from './hooks/FetchDataHook';
 import Loading from './components/Loading';
 import CacheHitCounter from './components/CacheHitCounter';
 
-function App() {
+export default function App() {
   const [searchValue, setSearchValue] = useState('');
-
+  
   const onInputSumbit = (newValue) => {
     setSearchValue(newValue)
   }
-
   const apiHookResults = useDataFetching(searchValue);
-
+  
   return (
     <div className="App">
       <Header />
       <div className='search-bar-counter'>
         <SearchBar onInputSumbit={onInputSumbit} />
-        <CacheHitCounter apiHookResults={apiHookResults} />
+        <CacheHitCounter cacheHitCount={apiHookResults?.cacheHitCount} />
       </div>
       {apiHookResults.isLoading
         ? <Loading />
@@ -30,5 +29,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

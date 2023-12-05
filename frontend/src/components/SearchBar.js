@@ -6,6 +6,7 @@ export default function SearchBar({onInputSumbit}) {
     const handleSubmit = (event) => {
         event.preventDefault()
         onInputSumbit(inputValue)
+        setInputValue('')
     };
 
     const handleInputChange = (e) => {

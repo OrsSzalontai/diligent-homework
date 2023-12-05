@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function Paginator({ data }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = process.env.PAGINATION_LIMIT || 20;
 
     const totalItems = data.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);

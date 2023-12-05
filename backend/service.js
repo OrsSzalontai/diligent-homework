@@ -1,6 +1,3 @@
-// import { getRecord } from './db-service';
-// import { createRecord } from './db-service';
-// import { fetchDataFromAPI } from './api-service';
 
 const { findRecord, createRecord} = require('./db-service');
 const fetchDataFromAPI = require('./api-service');

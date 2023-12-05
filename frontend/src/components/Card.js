@@ -1,5 +1,7 @@
-import React from "react"
+import React from "react";
+import star from "../images/star.png"
 
+const baseUrl = 'https://image.tmdb.org/t/p/w500'; // Base URL provided by TMDb
 
 export default function Card(props) {
 
@@ -12,15 +14,15 @@ export default function Card(props) {
     return (
         <div className="card">
             <img
-                src={'../images/bober.jpg'}
+                src={`${baseUrl}${props.poster_path}`} alt="Movie Poster"
                 className="card-image" 
             />
             <div className="card-stats">
                 <h4>{props.original_title}</h4>
             </div>
             <div className="card-rating">
-                <img src="https://i1.sndcdn.com/artworks-000365791161-ba17y3-t500x500.jpg" className="card-star" />
-                <span className="gray">({props.vote_average})</span>
+                <img src={star} className="card-star" alt="Rating star"/>
+                <span className="gray">({props.vote_average}/10)</span>
             </div>
                 <div className="gray">{formatDate(props.release_date)}</div>
         </div>
