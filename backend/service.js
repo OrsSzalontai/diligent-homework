@@ -1,16 +1,24 @@
 
-const { findRecord, createRecord} = require('./db-service');
+const { findRecord, updateRecord, createRecord, deleteRecord } = require('./db-service');
 const fetchDataFromAPI = require('./api-service');
 
-async function getSearchResults(searchTerm){
-    const databaseResult = await findRecord(searchTerm);
+const twoMinutesAgo = new Date(new Date() - 2 * 60 * 1000); // two minutes ago;
 
-    if (databaseResult && databaseResult?.results?.length > 0) {
-        return { data: databaseResult.results, isResultFromDB: true}
+async function getSearchResults(searchTerm, pageNumber) {
+    const databaseResult = await findRecord(searchTerm, pageNumber);
+
+    if (databaseResult?.updatedAt >= twoMinutesAgo) {
+
+        const updatedRecord = await updateRecord(searchTerm, pageNumber);
+        return { data: updatedRecord[1][0].dataValues, isResultFromDB: true };
+
+    } else if  (databaseResult?.updatedAt <= twoMinutesAgo) {
+        await deleteRecord(searchTerm, pageNumber);
     } else {
-        const dataFromApi = await fetchDataFromAPI(searchTerm);
-        await createRecord(searchTerm, dataFromApi?.results)
-        return {data: dataFromApi?.results, isResultFromDB: false}
+        const dataFromApi = await fetchDataFromAPI(searchTerm, pageNumber);
+
+        const createdRecord = await createRecord(searchTerm, dataFromApi,pageNumber);
+        return { data: createdRecord, isResultFromDB: false };
     }
 
 }

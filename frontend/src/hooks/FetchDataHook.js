@@ -1,41 +1,56 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const useDataFetching = (searchValue) => {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [statusCode, setStatusCode] = useState(0);
-    const [statusText, setStatusText] = useState('')
-    const [cacheHitCount, setCacheHitCount] = useState(0)
-    const [isResultFromDB, setIsResultFromDB] = useState(false)
+const useDataFetching = (searchValue,pageNumber) => {
+    const [responseState, setResponseState] = useState({
+        data: [],
+        isLoading: false,
+        error: null,
+        statusCode: 0,
+        statusText: '',
+        cacheHitCount: 0,
+        isResultFromDB: false
+    });
+
+    const updateState = (newState) => {
+        setResponseState(prevState => ({
+          ...prevState,
+          ...newState
+        }));
+      };
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (searchValue !== '') {
+        if (searchValue !== '') {
+                (async () => {
+                updateState({ isLoading: true, error: null });
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/data?search=${searchValue}`);
-                    setData(response.data.data);
-                    setIsLoading(false);
-                    setStatusCode(response.status)
-                    setStatusText(response.statusText)
-                    setCacheHitCount(response.data.cacheHitCount)
-                    setIsResultFromDB(response.data.isResultFromDB)
+                    const response = await axios.get(`http://localhost:5000/api/data?search=${searchValue}&pageNumber=${pageNumber}`);
+                    updateState({ 
+                        data: response.data.data.results,
+                        error: null,
+                        isLoading: false,
+                        statusCode: response.status,
+                        statusText: response.statusText,
+                        cacheHitCount: response.data.data.cache_hit,
+                        isResultFromDB:response.data.isResultFromDB,
+                     });
                 } catch (error) {
-                    setError(error);
-                    setIsLoading(false);
-                    setStatusCode(error.status)
-                    setStatusText(error.statusText)
+                    console.log(error)
+                    updateState({ 
+                        error,
+                        isLoading: false,
+                        statusCode: error.status,
+                        statusText: error.statusText
+                    })
+                } finally {
+                    updateState({ isLoading: false})
                 }
-            } else {
-                setIsLoading(false)
-            };
+            })();
         }
-        fetchData();
 
-    }, [searchValue]);
+    }, [searchValue, pageNumber]);
 
-    return { data, error, statusCode, statusText, cacheHitCount, isResultFromDB, isLoading };
+    return { ...responseState };
 };
 
 export default useDataFetching;

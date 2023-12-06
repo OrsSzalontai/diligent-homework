@@ -5,7 +5,7 @@ export default function SearchBar({onInputSumbit}) {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        onInputSumbit(inputValue)
+        onInputSumbit(inputValue.trim())
         setInputValue('')
     };
 

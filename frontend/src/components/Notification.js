@@ -12,7 +12,7 @@ export default function Notification({ notificationProps }) {
         }, 10000);
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [notificationProps]);
 
     let color = '';
     const statusCodeFirstNumber = Number(statusCode.toString().charAt(0))

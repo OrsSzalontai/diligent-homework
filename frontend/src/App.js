@@ -2,30 +2,29 @@ import './App.css';
 import Header from './components/Header'
 import SearchBar from './components/SearchBar';
 import Body from './components/Body';
-import React, { useState } from 'react';
-import useDataFetching from './hooks/FetchDataHook';
-import Loading from './components/Loading';
 import CacheHitCounter from './components/CacheHitCounter';
+import React, { useState } from 'react';
 
 export default function App() {
   const [searchValue, setSearchValue] = useState('');
+  const [cacheHitCount, setCacheHitCount] = useState(0)
   
   const onInputSumbit = (newValue) => {
     setSearchValue(newValue)
   }
-  const apiHookResults = useDataFetching(searchValue);
+  
+  const onCacheHitChanged = (newValue) => {
+    setCacheHitCount(newValue)
+  }
   
   return (
     <div className="App">
       <Header />
       <div className='search-bar-counter'>
         <SearchBar onInputSumbit={onInputSumbit} />
-        <CacheHitCounter cacheHitCount={apiHookResults?.cacheHitCount} />
+        <CacheHitCounter cacheHitCount={cacheHitCount} />
       </div>
-      {apiHookResults.isLoading
-        ? <Loading />
-        : <Body apiHookResults={apiHookResults} />
-      }
+         <Body searchValue={searchValue} onCacheHitChanged={onCacheHitChanged} />
     </div>
   );
 }

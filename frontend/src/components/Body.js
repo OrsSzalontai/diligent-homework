@@ -1,37 +1,54 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import Notification from './Notification';
 import Paginator from './Paginator';
 import Landing from './Landing';
+import Loading from './Loading';
+import useDataFetching from '../hooks/FetchDataHook';
 
 
-export default function Body({apiHookResults}) {
+export default function Body({ searchValue, onCacheHitChanged }) {
   const [cards, setCards] = useState([])
+  const [pageNumber, setPageNumber] = useState(1)
   
-  const { data, error, statusCode, statusText, isResultFromDB } = apiHookResults
+  const onPageNumberChanged = (newPageNumber) => {
+    setPageNumber(newPageNumber);
+  };
+
+  const { data, isLoading, error, statusCode, statusText, cacheHitCount, isResultFromDB } = useDataFetching(searchValue,pageNumber)
+
   const notificationProps = { error, statusCode, statusText, isResultFromDB };
 
-  React.useMemo(() => {
-    if (data && data?.length > 0){
-      setCards(data.map(item => {
+  useEffect(() => {
+    onCacheHitChanged(cacheHitCount)
+  }, [cacheHitCount, onCacheHitChanged])
+
+  useEffect(() => {
+    if (data && data?.results?.length > 0) {
+      setCards(data.results.map(item => {
         return (
           <Card
             key={item.id}
             {...item}
-  
+
           />
         )
       }))
     }
-  }, [data])
+  }, [data, pageNumber])
 
   return (
+    <>
+      {!!statusCode && <Notification notificationProps={notificationProps} />}
+      {isLoading ? <Loading /> :
         <>
-          {!!statusCode && <Notification notificationProps={notificationProps} />}
           {cards.length > 0
-            ? <Paginator data={cards} />
-            : <Landing />}
+            ? <Paginator cards={cards} pageInfo={data} onPageNumberChanged={onPageNumberChanged} />
+            : <Landing />
+          }
         </>
+      }
+    </>
   );
 };
 

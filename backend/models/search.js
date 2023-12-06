@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
   Search.init({
     searchTerm: DataTypes.STRING,
     createdAt: DataTypes.DATE,
-    results: DataTypes.JSON
+    results: DataTypes.JSON,
+    cache_hit: DataTypes.INTEGER,
+    pageNumber: DataTypes.INTEGER
+
   }, {
     sequelize,
     modelName: 'Search',

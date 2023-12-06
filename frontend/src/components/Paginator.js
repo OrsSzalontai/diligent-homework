@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function Paginator({ data }) {
+export default function Paginator({ cards, pageInfo, onPageNumberChanged }) {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = process.env.PAGINATION_LIMIT || 20;
 
-    const totalItems = data.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const totalItems = pageInfo.total_results;
+    const totalPages = pageInfo.total_pages;
+
+    useEffect(()=> {
+        onPageNumberChanged(currentPage)
+    },[currentPage, onPageNumberChanged])
 
     const handleClick = (page) => {
         setCurrentPage(page);
@@ -31,20 +35,6 @@ export default function Paginator({ data }) {
         }
     };
 
-
-
-    const renderData = () => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const currentPageData = data.slice(startIndex, endIndex);
-        return (
-            <section className="cards-list">
-                {currentPageData}
-            </section>
-
-        )
-    };
-
     const paginationItems = [];
     for (let i = 1; i <= totalPages; i++) {
         paginationItems.push(
@@ -56,7 +46,9 @@ export default function Paginator({ data }) {
 
     return (
         <div>
-            {renderData()}
+            <section className="cards-list">
+                {cards}
+            </section>
             {totalItems > itemsPerPage && <div className="paginator">
                 <button onClick={handleFirstPage}>Home</button>
                 <button onClick={handlePrevPage}>Previous</button>

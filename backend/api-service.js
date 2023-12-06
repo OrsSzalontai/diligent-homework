@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
-async function fetchDataFromAPI(searchTerm) {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=en-US`;
+async function fetchDataFromAPI(searchTerm, pageNumber) {
+    const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=en-US&page=${pageNumber}`;
     const options = {
         method: 'GET',
         headers: {

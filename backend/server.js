@@ -10,19 +10,15 @@ const router = new Router();
 app.use(bodyParser());
 app.use(cors());
 
-let cacheHitCount = 0
 
 router.get('/api/data', async (ctx) => {
     try {
-      const searchTerm = ctx.query.search;
-      const { data, isResultFromDB } = await getSearchResults(searchTerm)
-      if (isResultFromDB) {
-        cacheHitCount += 1;
-      }
-      ctx.body = { data, cacheHitCount, isResultFromDB };
+      const {search, pageNumber} = ctx.query;
+      const { data, isResultFromDB } = await getSearchResults(search,Number(pageNumber))
+      ctx.body = { data, isResultFromDB };
     } catch (error) {
       ctx.status = 500;
-      ctx.body = { error: error.message };
+      ctx.body = { error: error.message, stack: error.stack };
     }
   });
 
