@@ -4,7 +4,7 @@ import Notification from './Notification';
 import Paginator from './Paginator';
 import Landing from './Landing';
 import Loading from './Loading';
-import useDataFetching from '../hooks/FetchDataHook';
+import useDataFetching from '../hooks/useDataFetching';
 
 
 export default function Body({ searchValue, onCacheHitChanged }) {
@@ -24,8 +24,8 @@ export default function Body({ searchValue, onCacheHitChanged }) {
   }, [cacheHitCount, onCacheHitChanged])
 
   useEffect(() => {
-    if (data && data?.results?.length > 0) {
-      setCards(data.results.map(item => {
+    if (data && data?.results?.results?.length > 0) {
+      setCards(data.results.results.map(item => {
         return (
           <Card
             key={item.id}
@@ -37,13 +37,14 @@ export default function Body({ searchValue, onCacheHitChanged }) {
     }
   }, [data, pageNumber])
 
+
   return (
     <>
       {!!statusCode && <Notification notificationProps={notificationProps} />}
       {isLoading ? <Loading /> :
         <>
           {cards.length > 0
-            ? <Paginator cards={cards} pageInfo={data} onPageNumberChanged={onPageNumberChanged} />
+            ? <Paginator cards={cards} pageInfo={data?.results} onPageNumberChanged={onPageNumberChanged} />
             : <Landing />
           }
         </>
