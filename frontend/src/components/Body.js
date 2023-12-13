@@ -10,18 +10,18 @@ import useDataFetching from '../hooks/useDataFetching';
 export default function Body({ searchValue, onCacheHitChanged }) {
   const [cards, setCards] = useState([])
   const [pageNumber, setPageNumber] = useState(1)
-  
+
+  const { data, isLoading, error, statusCode, statusText, isResultFromDB } = useDataFetching(searchValue,pageNumber)
+
   const onPageNumberChanged = (newPageNumber) => {
     setPageNumber(newPageNumber);
   };
 
-  const { data, isLoading, error, statusCode, statusText, cacheHitCount, isResultFromDB } = useDataFetching(searchValue,pageNumber)
-
   const notificationProps = { error, statusCode, statusText, isResultFromDB };
 
   useEffect(() => {
-    onCacheHitChanged(cacheHitCount)
-  }, [cacheHitCount, onCacheHitChanged])
+    onCacheHitChanged(data?.cache_hit)
+  }, [data?.cache_hit, onCacheHitChanged])
 
   useEffect(() => {
     if (data && data?.results?.results?.length > 0) {
