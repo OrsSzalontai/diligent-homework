@@ -1,37 +1,34 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Paginator({ cards, pageInfo, onPageNumberChanged }) {
-    const [currentPage, setCurrentPage] = useState(1);
+export default function Paginator({ cards, pageInfo, onPageNumberChanged, pageNumber }) {
+
     const itemsPerPage = process.env.PAGINATION_LIMIT || 20;
 
     const totalItems = pageInfo.total_results;
     const totalPages = pageInfo.total_pages;
 
-    useEffect(()=> {
-        onPageNumberChanged(currentPage)
-    },[currentPage, onPageNumberChanged])
 
     const handleClick = (page) => {
-        setCurrentPage(page);
+        onPageNumberChanged(page);
     };
 
     const handleFirstPage = () => {
-        setCurrentPage(1);
+        onPageNumberChanged(1);
     };
 
     const handleLastPage = () => {
-        setCurrentPage(totalPages);
+        onPageNumberChanged(totalPages);
     };
 
     const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+        if (pageNumber > 1) {
+            onPageNumberChanged(pageNumber - 1);
         }
     };
 
     const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
+        if (pageNumber < totalPages) {
+            onPageNumberChanged(pageNumber + 1);
         }
     };
 
