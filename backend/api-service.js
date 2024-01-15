@@ -9,9 +9,12 @@ async function fetchDataFromAPI(searchTerm, pageNumber) {
             Authorization: `Bearer ${process.env.API_READ_ACCES_TOKEN}`
         }
     };
-
-    const res = await fetch(url, options);
-    return res.json()
+    try {
+        const res = await fetch(url, options);
+        return res.json()
+    } catch (error) {
+        throw error;
+    }
 }
 
 module.exports = fetchDataFromAPI;

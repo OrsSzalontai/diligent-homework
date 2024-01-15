@@ -6,12 +6,12 @@ import Landing from './Landing';
 import Loading from './Loading';
 import useDataFetching from '../hooks/useDataFetching';
 
-
 export default function Body({ searchValue, onCacheHitChanged }) {
   const [cards, setCards] = useState([])
   const [pageNumber, setPageNumber] = useState(1)
 
-  const { data, isLoading, error, statusCode, statusText, isResultFromDB } = useDataFetching(searchValue,pageNumber)
+  const { data } = useDataFetching(searchValue, pageNumber)
+  const { allData, isLoading, cacheHit, error, statusCode, statusText, isResultFromDB } = { ...data }
 
   const onPageNumberChanged = (newPageNumber) => {
     setPageNumber(newPageNumber);
@@ -20,12 +20,12 @@ export default function Body({ searchValue, onCacheHitChanged }) {
   const notificationProps = { error, statusCode, statusText, isResultFromDB };
 
   useEffect(() => {
-    onCacheHitChanged(data?.cache_hit)
-  }, [data?.cache_hit, onCacheHitChanged])
+    onCacheHitChanged(cacheHit)
+  }, [cacheHit, onCacheHitChanged])
 
   useEffect(() => {
-    if (data && data?.results?.results?.length > 0) {
-      setCards(data.results.results.map(item => {
+    if (allData && allData?.movieData?.length > 0) {
+      setCards(allData.movieData.map(item => {
         return (
           <Card
             key={item.id}
@@ -35,7 +35,7 @@ export default function Body({ searchValue, onCacheHitChanged }) {
         )
       }))
     }
-  }, [data, pageNumber])
+  }, [allData, pageNumber])
 
 
   return (
@@ -44,7 +44,11 @@ export default function Body({ searchValue, onCacheHitChanged }) {
       {isLoading ? <Loading /> :
         <>
           {cards.length > 0
-            ? <Paginator cards={cards} pageInfo={data?.results} onPageNumberChanged={onPageNumberChanged} />
+            ? <Paginator
+                cards={cards}
+                pageInfo={allData?.pageInfo}
+                onPageNumberChanged={onPageNumberChanged}
+                pageNumber={pageNumber} />
             : <Landing />
           }
         </>

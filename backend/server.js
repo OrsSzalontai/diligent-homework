@@ -18,7 +18,7 @@ router.get('/api/data', async (ctx) => {
       ctx.body = { data, isResultFromDB };
     } catch (error) {
       ctx.status = 500;
-      ctx.body = { error: error.message, stack: error.stack };
+      ctx.body = { error, error: error?.message, stack: error?.stack };
     }
   });
 

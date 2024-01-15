@@ -39,7 +39,13 @@ export default function Notification({ notificationProps }) {
                     backgroundColor: color,
                 }}
             >
-                {`Code: ${statusCode} Result: ${error || statusText} Data from: ${isResultFromDB ? 'Database' : '3rd party API'}`}
+                {
+                    `Code: ${statusCode} Result: ${error || statusText}
+                    ${isResultFromDB != null
+                        ? `Data from: ${isResultFromDB ? 'Database' : '3rd party API'}`
+                        : ''
+                    }`
+                }
             </div>}
         </>
     );

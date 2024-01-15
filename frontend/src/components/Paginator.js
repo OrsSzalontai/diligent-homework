@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export default function Paginator({ cards, pageInfo, onPageNumberChanged, pageNumber }) {
 
     const itemsPerPage = process.env.PAGINATION_LIMIT || 20;
 
-    const totalItems = pageInfo.total_results;
-    const totalPages = pageInfo.total_pages;
+    const totalItems = pageInfo?.totalResults;
+    const totalPages = pageInfo?.totalPages;
 
 
     const handleClick = (page) => {
